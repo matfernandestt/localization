@@ -79,6 +79,7 @@ public class DialogueNodeEditor : Editor
                 {
                     dialogueNode.textField = EditorGUILayout.TextField("Option Text", dialogueNode.textField);
                 }
+                dialogueNode.waveField = (AudioClip)EditorGUILayout.ObjectField("Wave", dialogueNode.waveField, typeof(AudioClip), false);
                 break;
             default:
                 Debug.LogError("DIALOGUE SYSTEM: Node type not implemented.");

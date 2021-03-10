@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DialogueSystem;
 using UnityEditor;
 using UnityEngine;
@@ -6,6 +7,15 @@ using UnityEngine;
 [CustomEditor(typeof(Dialogue))]
 public class DialogueEditor : Editor
 {
+    private Texture breakSign;
+    private Texture downArrow;
+    
+    private void Awake()
+    {
+        breakSign = Resources.Load<Texture>("Sprites/breakSign");
+        downArrow = Resources.Load<Texture>("Sprites/downArrow");
+    }
+
     public override void OnInspectorGUI()
     {
         var dialogue = (Dialogue) target;
@@ -17,16 +27,16 @@ public class DialogueEditor : Editor
         }
         
         var style = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter};
-        
+
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         if (GUILayout.Button("New Node"))
         {
             dialogue.dialogueSequence.Add(dialogue.dialogueSequence.Count > 0 ? dialogue.dialogueSequence[dialogue.dialogueSequence.Count - 1] : LocalizationManager.Instance.BaseDialogueNode);
         }
+
         for (var i = 0; i < dialogue.dialogueSequence.Count; i++)
         {
             if (dialogue.dialogueSequence == null) break;
-            EditorGUILayout.LabelField("");
             var nodeType = ((NodeType) dialogue.dialogueSequence[i].nodeTypeSelectedIndex).ToString();
             switch (((NodeType) dialogue.dialogueSequence[i].nodeTypeSelectedIndex))
             {
@@ -40,14 +50,16 @@ public class DialogueEditor : Editor
                     GUI.backgroundColor = new Color(0.39f, 0.77f, 1f);
                     break;
             }
-            
+
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            
+
             EditorGUILayout.HelpBox("NODE ID: " + i, MessageType.None);
             EditorGUILayout.LabelField(nodeType, style, GUILayout.ExpandWidth(true));
-            var dialogueScriptableObjectCastField = (DialogueNode)EditorGUILayout.ObjectField(dialogue.dialogueSequence[i], typeof(ScriptableObject), false);
+            var dialogueScriptableObjectCastField =
+                (DialogueNode) EditorGUILayout.ObjectField(dialogue.dialogueSequence[i], typeof(ScriptableObject),
+                    false);
             dialogue.dialogueSequence[i] = dialogueScriptableObjectCastField;
-            
+
             switch (((NodeType) dialogue.dialogueSequence[i].nodeTypeSelectedIndex))
             {
                 case NodeType.Speak:
@@ -61,7 +73,7 @@ public class DialogueEditor : Editor
                             var option = dialogue.dialogueSequence[i].optionNodes[j];
                             EditorGUILayout.BeginVertical();
                             GUI.backgroundColor = Color.red;
-                            EditorGUILayout.HelpBox("(ID: "+ j + ") - " + option.TextField, MessageType.None);
+                            EditorGUILayout.HelpBox("(ID: " + j + ") - " + option.TextField, MessageType.None);
                             EditorGUILayout.EndVertical();
                         }
                     }
@@ -69,6 +81,7 @@ public class DialogueEditor : Editor
                     {
                         EditorGUILayout.HelpBox("YOU NEED TO INSERT OPTIONS IN THE CHOOSE NODE.", MessageType.Error);
                     }
+
                     break;
                 case NodeType.Option:
                     break;
@@ -83,7 +96,22 @@ public class DialogueEditor : Editor
             {
                 dialogue.dialogueSequence.RemoveAt(i);
             }
+
             EditorGUILayout.EndVertical();
+            if (i < dialogue.dialogueSequence.Count - 1)
+            {
+                switch (((NodeType) dialogue.dialogueSequence[i].nodeTypeSelectedIndex))
+                {
+                    case NodeType.Speak:
+                        GUILayout.Box(downArrow, style);
+                        break;
+                    case NodeType.Choose:
+                        GUILayout.Box(breakSign, style);
+                        break;
+                    case NodeType.Option:
+                        break;
+                }
+            }
         }
         
         EditorGUILayout.EndVertical();
