@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
+[ExecuteAlways]
 [CustomEditor(typeof(LocalizationManager))]
 public class LocalizationManagerEditor : Editor
 {
@@ -8,16 +10,22 @@ public class LocalizationManagerEditor : Editor
     {
         var localizationManager = (LocalizationManager) target;
 
-        var nodeTypes = localizationManager.StringTables.Keys.ToArray();
-        localizationManager.currentLanguageSelectedIndex = EditorGUILayout.Popup("Current Language", localizationManager.currentLanguageSelectedIndex, nodeTypes);
-        localizationManager.currentLanguage = localizationManager.StringTables.Keys.ToArray()[localizationManager.currentLanguageSelectedIndex];
-
-
+        if (localizationManager.StringTables.Keys.ToArray().Length > 0)
+        {
+            var nodeTypes = localizationManager.StringTables.Keys.ToArray();
+            localizationManager.currentLanguageSelectedIndex = EditorGUILayout.Popup("Current Language", localizationManager.currentLanguageSelectedIndex, nodeTypes);
+            localizationManager.currentLanguage = localizationManager.StringTables.Keys.ToArray()[localizationManager.currentLanguageSelectedIndex];
+        }
+        else
+        {
+            if (GUILayout.Button("New String Table"))
+            {
+                localizationManager.StringTables.Add("empty", null);
+            }
+        }
         DrawDefaultInspector();
-        if(localizationManager.BaseDialogueNode == null)
-            EditorGUILayout.HelpBox("BASE DIALOGUE NODE MUST NOT BE EMPTY.", MessageType.Error);
         EditorGUILayout.LabelField("");
-        EditorGUILayout.LabelField("manager current language: " + localizationManager.currentLanguage);
+        EditorGUILayout.LabelField("manager current language: " + localizationManager.CurrentLanguage);
         EditorGUILayout.LabelField("current language index: " + localizationManager.currentLanguageSelectedIndex);
     }
 }

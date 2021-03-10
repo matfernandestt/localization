@@ -5,4 +5,11 @@ using UnityEngine;
 public class Dialogue : ScriptableObject
 {
     [HideInInspector] public List<DialogueNode> dialogueSequence;
+    [HideInInspector] public DictionaryIntOptionIndexer optionIndexers;
+
+    [ContextMenu("Clear Option Indexers")]
+    public void ClearOptionIndexers()
+    {
+        optionIndexers.Clear();
+    }
 }

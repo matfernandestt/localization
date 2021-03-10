@@ -14,4 +14,11 @@ public class SingletonScriptableObject<T> : ScriptableObject where T : Scriptabl
             return _instance;
         }
     }
+
+    public static T GetInstance(string name)
+    {
+        if (!_instance)
+            _instance = (T)Resources.Load(name);
+        return _instance;
+    }
 }

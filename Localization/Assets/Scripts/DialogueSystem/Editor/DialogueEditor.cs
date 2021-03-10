@@ -9,7 +9,7 @@ public class DialogueEditor : Editor
 {
     private Texture breakSign;
     private Texture downArrow;
-    
+
     private void Awake()
     {
         breakSign = Resources.Load<Texture>("Sprites/breakSign");
@@ -19,7 +19,7 @@ public class DialogueEditor : Editor
     public override void OnInspectorGUI()
     {
         var dialogue = (Dialogue) target;
-        var manager = LocalizationManager.Instance;
+        var manager = LocalizationManager.GetInstance();
         if (manager == null)
         {
             EditorGUILayout.HelpBox("SETUP THE LOCALIZATION MANAGER BEFORE START", MessageType.Error);
@@ -31,7 +31,8 @@ public class DialogueEditor : Editor
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         if (GUILayout.Button("New Node"))
         {
-            dialogue.dialogueSequence.Add(dialogue.dialogueSequence.Count > 0 ? dialogue.dialogueSequence[dialogue.dialogueSequence.Count - 1] : LocalizationManager.Instance.BaseDialogueNode);
+            dialogue.dialogueSequence.Add(dialogue.dialogueSequence.Count > 0 ? dialogue.dialogueSequence[dialogue.dialogueSequence.Count - 1] : BaseNodeReferencer.GetInstance().baseNode);
+            EditorUtility.SetDirty(dialogue);
         }
 
         for (var i = 0; i < dialogue.dialogueSequence.Count; i++)
@@ -55,9 +56,7 @@ public class DialogueEditor : Editor
 
             EditorGUILayout.HelpBox("NODE ID: " + i, MessageType.None);
             EditorGUILayout.LabelField(nodeType, style, GUILayout.ExpandWidth(true));
-            var dialogueScriptableObjectCastField =
-                (DialogueNode) EditorGUILayout.ObjectField(dialogue.dialogueSequence[i], typeof(ScriptableObject),
-                    false);
+            var dialogueScriptableObjectCastField = (DialogueNode) EditorGUILayout.ObjectField(dialogue.dialogueSequence[i], typeof(ScriptableObject), false);
             dialogue.dialogueSequence[i] = dialogueScriptableObjectCastField;
 
             switch (((NodeType) dialogue.dialogueSequence[i].nodeTypeSelectedIndex))
@@ -68,13 +67,25 @@ public class DialogueEditor : Editor
                 case NodeType.Choose:
                     if (dialogue.dialogueSequence[i].optionNodes.Count > 0)
                     {
+                        if (!dialogue.optionIndexers.ContainsKey(i))
+                        {
+                            var optionIndexer = new OptionIndexer { indexes = new int[dialogue.dialogueSequence[i].optionNodes.Count] };
+                            dialogue.optionIndexers.Add(i, optionIndexer);
+                        }
                         for (var j = 0; j < dialogue.dialogueSequence[i].optionNodes.Count; j++)
                         {
                             var option = dialogue.dialogueSequence[i].optionNodes[j];
-                            EditorGUILayout.BeginVertical();
                             GUI.backgroundColor = Color.red;
-                            EditorGUILayout.HelpBox("(ID: " + j + ") - " + option.TextField, MessageType.None);
+                            EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+                            
+                            EditorGUILayout.HelpBox("(ID:" + j + ")\n" + option.TextField, MessageType.None);
+
+                            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                            GUILayout.Label("Jump to node with ID");
+                            dialogue.optionIndexers[i].indexes[j] = EditorGUILayout.IntField(dialogue.optionIndexers[i].indexes[j]);
                             EditorGUILayout.EndVertical();
+
+                            EditorGUILayout.EndHorizontal();
                         }
                     }
                     else
@@ -95,6 +106,7 @@ public class DialogueEditor : Editor
             if (GUILayout.Button("Remove Node"))
             {
                 dialogue.dialogueSequence.RemoveAt(i);
+                EditorUtility.SetDirty(dialogue);
             }
 
             EditorGUILayout.EndVertical();

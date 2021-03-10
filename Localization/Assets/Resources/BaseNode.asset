@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6533749ef1c0ad4e9eaac642d0283c0, type: 3}
   m_Name: BaseNode
   m_EditorClassIdentifier: 
-  isLocalizable: 1
-  textField: Bom dia.
+  isLocalizable: 0
+  textField: 
   waveField: {fileID: 0}
+  optionNodes: []
   nodeTypeSelectedIndex: 0
-  serializedTextSpeechSelectedIndex: 1
+  serializedTextSpeechSelectedIndex: 0
+  nodeJumpIndex: 0

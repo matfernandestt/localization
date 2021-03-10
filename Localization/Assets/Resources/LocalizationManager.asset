@@ -48,5 +48,5 @@ MonoBehaviour:
     - {fileID: 4900000, guid: fc63081fd1f84154cb3e4d4eec2c000b, type: 3}
     - {fileID: 4900000, guid: 4dadd3763027f4247b37a125e5e2ce7e, type: 3}
   BaseDialogueNode: {fileID: 11400000, guid: 4f147d19949924245a14480f6b1d0bd6, type: 2}
-  currentLanguage: pt-br
-  currentLanguageSelectedIndex: 1
+  currentLanguage: en-us
+  currentLanguageSelectedIndex: 0
