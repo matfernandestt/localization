@@ -10,6 +10,12 @@ public class DialogueNodeEditor : Editor
     public override void OnInspectorGUI()
     {
         var dialogueNode = (DialogueNode) target;
+        var manager = LocalizationManager.Instance;
+        if (manager == null)
+        {
+            EditorGUILayout.HelpBox("SETUP THE LOCALIZATION MANAGER BEFORE START", MessageType.Error);
+            return;
+        }
 
         var nodeTypes = Enum.GetNames(typeof(NodeType));
         dialogueNode.nodeTypeSelectedIndex = EditorGUILayout.Popup("Node Type", dialogueNode.nodeTypeSelectedIndex, nodeTypes);
@@ -22,7 +28,6 @@ public class DialogueNodeEditor : Editor
             case NodeType.Speak:
                 if (dialogueNode.isLocalizable)
                 {
-                    var manager = LocalizationManager.Instance;
                     var grid = CSVReader.ReadCSV(manager.StringTables[manager.currentLanguage]);
                     var keys = new List<string>();
                     for (var i = 0; i < grid.GetLength(0) - 1; i++)
@@ -61,7 +66,6 @@ public class DialogueNodeEditor : Editor
             case NodeType.Option:
                 if (dialogueNode.isLocalizable)
                 {
-                    var manager = LocalizationManager.Instance;
                     var grid = CSVReader.ReadCSV(manager.StringTables[manager.currentLanguage]);
                     var keys = new List<string>();
                     for (var i = 0; i < grid.GetLength(0) - 1; i++)

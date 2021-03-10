@@ -9,6 +9,12 @@ public class DialogueEditor : Editor
     public override void OnInspectorGUI()
     {
         var dialogue = (Dialogue) target;
+        var manager = LocalizationManager.Instance;
+        if (manager == null)
+        {
+            EditorGUILayout.HelpBox("SETUP THE LOCALIZATION MANAGER BEFORE START", MessageType.Error);
+            return;
+        }
         
         var style = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter};
         
