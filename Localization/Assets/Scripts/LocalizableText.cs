@@ -10,6 +10,7 @@ public class LocalizableText : MonoBehaviour
 
     private void Awake()
     {
+        UpdateText();
         LocalizationManager.OnChangeLanguage += UpdateText;
     }
 

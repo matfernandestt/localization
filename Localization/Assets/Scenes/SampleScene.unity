@@ -319,7 +319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localTextField: {fileID: 1073037498}
-  a: {fileID: 11400000, guid: f0a2e97ca22ebb441ab54a728dd298ec, type: 2}
+  a: {fileID: 11400000, guid: 460ca18ce3574dd42b05559d9a4053f7, type: 2}
 --- !u!1 &1073037496
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,8 +534,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Voc\xEA n\xE3o \xE9 daqui, n\xE9? Consigo sentir o cheiro de mijo escorrendo
-    em suas coxas, seu paspalh\xE3o."
+  m_Text: You're not from here, are you? I can smell the pee sliding across your
+    thighs, you dumbfuck.
 --- !u!114 &1634536843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,7 +614,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: velocidade
+  m_text: Good morning.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -648,8 +648,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -695,7 +695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a2fc0e43126bb43ae6abc2b7e961d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedTextIndex: 19
+  selectedTextIndex: 1
 --- !u!222 &1742128375
 CanvasRenderer:
   m_ObjectHideFlags: 0
